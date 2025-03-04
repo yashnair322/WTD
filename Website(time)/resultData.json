@@ -1,0 +1,51 @@
+{
+
+    "202307030018": {
+        "result": {
+            "subjects": [
+                {
+                    "code": "71204001001",
+                    "name": "Web Technology and Design",
+                    "maxMarks": 100,
+                    "marksObtained": 95
+                },
+                {
+                    "code": "71204001002",
+                    "name": "Object Oriented Programming using Java",
+                    "maxMarks": 100,
+                    "marksObtained": 93
+                },
+                {
+                    "code": "71204001003",
+                    "name": "Operating Systems",
+                    "maxMarks": 100,
+                    "marksObtained": 90
+                },
+                {
+                    "code": "71204001004",
+                    "name": "Mastering in Kali Linux",
+                    "maxMarks": 100,
+                    "marksObtained": 92
+                },
+                {
+                    "code": "71204001005",
+                    "name": "Social Media and Blog Writing",
+                    "maxMarks": 100,
+                    "marksObtained": 91
+                },
+                {
+                    "code": "UC012000003",
+                    "name": "Quantitative Aptitude & Interpretation",
+                    "maxMarks": 100,
+                    "marksObtained": 96
+                }
+            ],
+            "totalObtained": 557,
+            "totalMarks": 600,
+            "examDate": "Feb 2025",
+            "status": "PASS",
+            "percentage": 92.83,
+            "grade": "A+"
+        }
+    }
+}
