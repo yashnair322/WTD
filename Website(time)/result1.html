@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Result - Karnavati University</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="result1.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #e1f0ff;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        nav {
+            background-color: #333;
+            padding: 10px 0;
+        }
+        nav a {
+            color: white;
+            text-decoration: none;
+            padding: 10px 20px;
+        }
+        nav a:hover {
+            background-color: #ddd;
+            color: #333;
+        }
+        .container {
+            margin-top: 20px;
+            flex: 1;
+        }
+        .marksheet {
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        .marks-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            background: url('logo.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-blend-mode: lighten;
+        }
+        .marks-table th, .marks-table td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: center;
+            background: rgba(255, 255, 255, 0.8);
+        }
+        .marks-table th {
+            background: rgba(0, 123, 255, 0.9);
+            color: white;
+        }
+        .result-summary {
+            margin-top: 20px;
+            text-align: right;
+            font-weight: bold;
+        }
+        .logout-btn {
+            background-color: #ff4d4d;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .logout-btn:hover {
+            background-color: #e63939;
+        }
+        .marquee {
+            background-color: #f1f1f1;
+            padding: 10px;
+            text-align: center;
+        }
+        footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 20px;
+        }
+        footer a {
+            color: #f1f1f1;
+            text-decoration: none;
+            padding: 5px;
+        }
+        footer a:hover {
+            color: #ddd;
+        }
+    </style>
+</head>
+<body>
+<nav>
+    <a href="home.html">KU</a>
+    <a href="home.html">Home</a>
+    <a href="result1.html">Result</a>
+    <a href="timetable.html">Timetable</a>
+    <a href="contact.html">Contact Us</a>
+    <button class="logout-btn" onclick="logout()">Logout</button>
+</nav>
+<div class="marquee">
+    <marquee behavior="scroll" direction="left">Welcome to the Student Result Page of Karnavati University.</marquee>
+</div>
+<div class="container">
+    <div class="marksheet">
+        <div class="header text-center">
+            <img src="logo.jpg" alt="Karnavati University Logo" style="height: 100px;">
+            <h1>Karnavati University</h1>
+            <h2>Annual Statement of Marks</h2>
+            <p>UnitedWorld Institute of Technology (UIT)</p>
+        </div>
+
+        <div class="info">
+            <p><strong>Name of the Candidate:</strong> <span id="studentName"></span></p>
+            <p><strong>Enrollment Number:</strong> <span id="enrollmentNumber"></span></p>
+        </div>
+        <table class="marks-table">
+            <thead>
+                <tr>
+                    <th>Subject Code</th>
+                    <th>Subject Name</th>
+                    <th>Max. Marks</th>
+                    <th>Marks Obtained</th>
+                </tr>
+            </thead>
+            <tbody id="marksTableBody">
+            </tbody>
+        </table>
+        <div class="result-summary">
+            <p>Total Obtained Marks: <span id="totalObtained"></span></p>
+            <p>Total Marks: <span id="totalMarks"></span></p>
+            <p>Month and Year of Examination: <span id="examDate"></span></p>
+            <p>Result: <span id="resultStatus"></span></p>
+            <p>Percentage: <span id="percentage"></span>%</p>
+            <p>Grade: <span id="grade"></span></p>
+        </div>
+    </div>
+</div>
+<footer>
+    <div class="container">
+        <p>Sitemap:</p>
+        <a href="home.html">Home</a> |
+        <a href="result1.html">Result</a> |
+        <a href="timetable.html">Timetable</a> |
+        <a href="contact.html">Contact Us</a>
+    </div>
+</footer>
+<script>
+    const studentInfo = JSON.parse(localStorage.getItem('studentInfo'));
+    if (studentInfo) {
+        document.getElementById('studentName').innerText = studentInfo.name;
+        document.getElementById('enrollmentNumber').innerText = studentInfo.enrollmentNumber;
+
+        fetch('resultData.json')
+            .then(response => response.json())
+            .then(data => {
+                const result = data[studentInfo.enrollmentNumber]?.result;
+                if (result) {
+                    const marksTableBody = document.getElementById('marksTableBody');
+                    marksTableBody.innerHTML = '';
+
+                    result.subjects.forEach(subject => {
+                        marksTableBody.innerHTML += `
+                            <tr>
+                                <td>${subject.code}</td>
+                                <td>${subject.name}</td>
+                                <td>${subject.maxMarks}</td>
+                                <td>${subject.marksObtained}</td>
+                            </tr>
+                        `;
+                    });
+                    document.getElementById('totalObtained').innerText = result.totalObtained;
+                    document.getElementById('totalMarks').innerText = result.totalMarks;
+                    document.getElementById('examDate').innerText = result.examDate;
+                    document.getElementById('resultStatus').innerText = result.status;
+                    document.getElementById('percentage').innerText = result.percentage;
+                    document.getElementById('grade').innerText = result.grade;
+                } else {
+                    alert("Result not found for this student.");
+                }
+            })
+            .catch(error => {
+                console.error('Error fetching result data:', error);
+                alert("Failed to load result data.");
+            });
+    } else {
+        alert("No student data found. Please log in.");
+        window.location.href = 'index.html';
+    }
+    function logout() {
+        localStorage.removeItem('studentInfo');
+        alert("Logged out successfully!");
+        window.location.href = 'index.html';
+    }
+</script>
+</body>
+</html>
